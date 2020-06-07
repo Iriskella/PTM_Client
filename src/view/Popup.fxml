@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindowController">
+   <children>
+      <HBox spacing="20.0">
+         <children>
+            <Label prefWidth="25.0" text="IP">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="ipInput" />
+         </children>
+         <VBox.margin>
+            <Insets left="2.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox spacing="20.0">
+         <children>
+            <Label prefWidth="25.0" text="Port">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="portInput" />
+         </children>
+         <VBox.margin>
+            <Insets left="2.0" />
+         </VBox.margin></HBox>
+      <Button mnemonicParsing="false" onAction="#popupSubmit" prefHeight="26.0" prefWidth="231.0" text="Submit" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

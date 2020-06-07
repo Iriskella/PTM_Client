@@ -19,7 +19,6 @@ public class PathFinderConnection {
      *
      * @param ip   Path Finder server ip
      * @param port Path Finder application port
-     * @return simulator connection
      */
     public PathFinderConnection(String ip, int port) {
         try {

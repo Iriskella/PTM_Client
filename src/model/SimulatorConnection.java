@@ -14,12 +14,16 @@ import java.util.ArrayList;
 public class SimulatorConnection {
 
     private static SimulatorConnection singleConnection = null;
+    private final String ip;
+    private final int port;
     private Socket socket;
     private PrintWriter outToSocket;
     private BufferedReader inFromSocket;
 
     // Constructor, establish a single connection to the simulator
     private SimulatorConnection(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
         try {
             socket = new Socket(ip, port);
             outToSocket = new PrintWriter(socket.getOutputStream());
@@ -49,15 +53,20 @@ public class SimulatorConnection {
      */
     public String[] getPlainLocation() {
 
-        // Request position
-        outToSocket.println("dump /position");
-        outToSocket.flush();
-
-        // Read result
         String line;
         ArrayList<String> location = new ArrayList<>();
+
         try {
-            while (!(line = inFromSocket.readLine()).equals("</PropertyList>")) {
+            Socket soc = new Socket(ip,port);
+            PrintWriter out = new PrintWriter(soc.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+
+            // Request position
+            out.println("dump /position");
+            out.flush();
+
+            // Read result
+            while (!(line = in.readLine()).equals("</PropertyList>")) {
                 if (!line.equals(""))
                     location.add(line);
             }
@@ -66,11 +75,19 @@ public class SimulatorConnection {
             String latitude = location.get(3);
             String[] x = longitude.split("[<>]");
             String[] y = latitude.split("[<>]");
-            inFromSocket.readLine();
+            in.readLine();
+
+            out.close();
+            in.close();
+            soc.close();
+
+            System.out.println("New location: " + x[2] + " | " + y[2]);
             return new String[]{x[2],y[2]};
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

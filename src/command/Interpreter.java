@@ -39,6 +39,11 @@ public class Interpreter {
 				"var elevator = bind /controls/flight/elevator",
 				"var alt = bind /instrumentation/altimeter/indicated-altitude-ft",
 				"var rpm = bind /engines/engine/rpm",
+				"var hroute = 0",
+				"var goal = 0",
+				"var altr = 2000",
+				"var e=0",
+				"var r=0"
 		};
 		this.interpret(startCode);
 		this.stop();

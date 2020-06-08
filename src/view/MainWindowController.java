@@ -322,7 +322,8 @@ public class MainWindowController extends Observable implements Initializable, O
     private void drawLine(String[] line) {
         if (line == null) return;
 
-        double x = airplane_pos.getX() * cube_length, y = airplane_pos.getY() * cube_length;
+        double x = airplane_pos.getX() * cube_length + (AirplaneImage.getWidth() / 2)
+                ,y = airplane_pos.getY() * cube_length + (AirplaneImage.getHeight() / 2);
         int length = line.length;
         GraphicsContext graphicsContext = iconLayer.getGraphicsContext2D();
         graphicsContext.setStroke(LineColor);
@@ -330,14 +331,14 @@ public class MainWindowController extends Observable implements Initializable, O
         for (int i = 0; i < length; i++) {
             switch (line[i]) {
                 case "Right":
-                    graphicsContext.strokeLine(x, y, x + cube_length, y);
+                    graphicsContext.strokeLine(x , y, x + cube_length, y);
                     x += cube_length;
                     break;
                 case "Left":
                     graphicsContext.strokeLine(x, y, x - cube_length, y);
                     x -= cube_length;
                     break;
-                case "UP":
+                case "Up":
                     graphicsContext.strokeLine(x, y, x, y - cube_length);
                     y -= cube_length;
                     break;

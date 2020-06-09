@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -38,11 +39,11 @@ public class MainWindowController extends Observable implements Initializable, O
     @FXML
     private HeightMapDisplayer heightMap;
     @FXML
-    private Canvas iconLayer;
+    private Canvas iconLayer, lineLayer;
     @FXML
     private RadioButton manual, autoPilot;
     @FXML
-    private Slider throttleSlider,rudderSlider;
+    private Slider throttleSlider, rudderSlider;
     @FXML
     private Circle border, joystick;
     @FXML
@@ -53,7 +54,7 @@ public class MainWindowController extends Observable implements Initializable, O
     // Shared data
     public DoubleProperty aileron, elevator;
     // Data
-    private static String currIp, currPort;
+    private static String currIp, currPort, pathFinderIP, pathFinderPort;
     private final Color LineColor = Color.BLACK.darker();
     private final Image AirplaneImage = new Image(new FileInputStream("./resources/airplane.png"));
     private final Image TargetImage = new Image(new FileInputStream("./resources/target.png"));
@@ -63,13 +64,14 @@ public class MainWindowController extends Observable implements Initializable, O
     private String[] pathInstructions;
     private Point airplane_pos, target_pos, startPos, endPos;
     private Point originalScene, originalTranslate;
-    private double offset;
-    private boolean isConnected;
+    private double offset, angle;
+    private boolean isConnected, pathFound;
     private File currentFile;
 
     // ----------------------------------- Initialize functions -------------------------------------------
 
     public MainWindowController() throws FileNotFoundException {
+        pathFound = false;
         isConnected = false;
         airplane_pos = new Point();
         aileron = new SimpleDoubleProperty();
@@ -88,10 +90,12 @@ public class MainWindowController extends Observable implements Initializable, O
                 heightMap.set_heightMatrix(this._mapData);
             }
 
-            if (iconLayer != null) {
+            if (iconLayer != null && lineLayer != null) {
                 iconLayer.setOnMouseClicked(MapPressedHandler);
                 iconLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
                 iconLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
+                lineLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
+                lineLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
                 drawIcons();
             }
         } catch (FileNotFoundException e) {
@@ -116,14 +120,14 @@ public class MainWindowController extends Observable implements Initializable, O
         }
 
         // Sliders
-        if(throttleSlider != null && rudderSlider != null){
+        if (throttleSlider != null && rudderSlider != null) {
             throttleSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(manual.isSelected())
+                if (manual.isSelected())
                     viewModel.setThrottle();
             });
 
             rudderSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if(manual.isSelected())
+                if (manual.isSelected())
                     viewModel.setRudder();
             });
         }
@@ -139,6 +143,7 @@ public class MainWindowController extends Observable implements Initializable, O
     }
 
     // ----------------------------------- Buttons functions -------------------------------------------
+
     /**
      * Load CSV file transform it's data to an integer matrix
      * and update the displayed height map
@@ -181,7 +186,9 @@ public class MainWindowController extends Observable implements Initializable, O
             return;
         }
         this.showPopup();
-        this.viewModel.connectToPathFinder(currIp, currPort);
+        pathFinderIP = currIp;
+        pathFinderPort = currPort;
+        this.viewModel.connectToPathFinder(pathFinderIP, pathFinderPort);
         this.viewModel.findPath(
                 airplane_pos,
                 target_pos,
@@ -192,34 +199,40 @@ public class MainWindowController extends Observable implements Initializable, O
     /**
      * Load TXT file and send it's data to the interpreter
      */
-    public void loadAutoPilot(){
+    public void loadAutoPilot() {
         File currentFile = TxtHandler.LoadFile(heightMap.getScene().getWindow());
         try {
             String[] txtData = TxtHandler.getTxtData(currentFile);
-            for(String s: txtData){
+            for (String s : txtData) {
                 txtArea.appendText(s);
                 txtArea.appendText("\n");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if(autoPilot.isSelected() && currentFile != null){
+        if (autoPilot.isSelected() && currentFile != null) {
             this.viewModel.interpret(currentFile);
         }
     }
 
-    public void radioButtonsPressed(){
-        if(!isConnected){
-            new Alert(Alert.AlertType.ERROR, "Please Set a connection first").showAndWait();
-            manual.setSelected(false);
-            autoPilot.setSelected(false);
+    /**
+     * Auto Pilot pressed -> activate auto pilot
+     */
+    public void radioButtons1Pressed() {
+        if (!isConnected) {
+            ConnectionRequiredAlert();
             return;
-        }
-        if(manual.isSelected())
-            this.viewModel.stopInterpret();
-        else if(autoPilot.isSelected() && currentFile != null){
+        } else if (currentFile != null)
             this.viewModel.interpret(currentFile);
-        }
+    }
+
+    /**
+     * Manual pressed -> deactivate auto pilot
+     */
+    public void radioButtons2Pressed() {
+        if (isConnected)
+            this.viewModel.stopInterpret();
+        else ConnectionRequiredAlert();
     }
 
     // ----------------------------------- Event handlers -------------------------------------------
@@ -260,6 +273,7 @@ public class MainWindowController extends Observable implements Initializable, O
                 ((Circle) (event.getSource())).setTranslateY(currTranslate.getY());
                 if (manual.isSelected()) {
                     Point simulatorSafe = translateToSimulatorValues(currTranslate);
+                    System.out.println(simulatorSafe.getX() + "     " + simulatorSafe.getY());
                     aileron.setValue(simulatorSafe.getX());
                     elevator.setValue(simulatorSafe.getY());
                     viewModel.movePlain();
@@ -278,26 +292,39 @@ public class MainWindowController extends Observable implements Initializable, O
     };
 
     // ------------------------------------- help functions -------------------------------------------
+
     /**
      * Flight Gear simulator works with values between 1 and -1.
      *
      * @param position given by the joystick
      * @return position between 1 and 0
      */
-    public Point translateToSimulatorValues(Point position) {
+    private Point translateToSimulatorValues(Point position) {
         double maxX = (border.getRadius() - joystick.getRadius()) + border.getCenterX();
         double minX = border.getCenterX() - (border.getRadius() - joystick.getRadius());
         double minY = (border.getRadius() - joystick.getRadius()) + border.getCenterY();
         double maxY = border.getCenterY() - (border.getRadius() - joystick.getRadius());
         return new Point(
                 (position.getX() - minX) / (maxX - minX) * 2 - 1,
-                (position.getY() - minY) / (maxY - minY) * 2 + 1);
+                (position.getY() - minY) / (maxY - minY) * 2 - 1);
     }
 
-    public boolean isInside(Point position) {
+    /**
+     * Check if the point attributes are inside the circle borders
+     *
+     * @param position a Point
+     * @return if the point attributes are inside True : False
+     */
+    private boolean isInside(Point position) {
         return (
                 Math.pow((position.getX() - border.getCenterX()), 2) + Math.pow((position.getY() - border.getCenterY()), 2)
                         <= Math.pow((border.getRadius() - joystick.getRadius()), 2));
+    }
+
+    private void ConnectionRequiredAlert() {
+        new Alert(Alert.AlertType.ERROR, "Please Set a connection first").showAndWait();
+        manual.setSelected(false);
+        autoPilot.setSelected(false);
     }
 
     // ------------------------------------- Draw functions --------------------------------------------
@@ -308,10 +335,17 @@ public class MainWindowController extends Observable implements Initializable, O
     private void drawIcons() {
         GraphicsContext graphicsContext = iconLayer.getGraphicsContext2D();
         graphicsContext.clearRect(0, 0, iconLayer.getWidth(), iconLayer.getHeight());
-        graphicsContext.drawImage(AirplaneImage, airplane_pos.getX() * cube_length, airplane_pos.getY() * cube_length);
+        drawAirplane(graphicsContext);
         if (target_pos != null)
             graphicsContext.drawImage(TargetImage, target_pos.getX() * cube_length, target_pos.getY() * cube_length);
-        drawLine(pathInstructions);
+    }
+
+    private void drawAirplane(GraphicsContext graphicsContext){
+        graphicsContext.save();
+        Rotate r = new Rotate(angle, airplane_pos.getX() * cube_length, airplane_pos.getY() * cube_length);
+        graphicsContext.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+        graphicsContext.drawImage(AirplaneImage, airplane_pos.getX() * cube_length, airplane_pos.getY() * cube_length);
+        graphicsContext.restore();
     }
 
     /**
@@ -322,16 +356,16 @@ public class MainWindowController extends Observable implements Initializable, O
     private void drawLine(String[] line) {
         if (line == null) return;
 
-        double x = airplane_pos.getX() * cube_length + (AirplaneImage.getWidth() / 2)
-                ,y = airplane_pos.getY() * cube_length + (AirplaneImage.getHeight() / 2);
+        double x = airplane_pos.getX() * cube_length + (AirplaneImage.getWidth() / 2), y = airplane_pos.getY() * cube_length + (AirplaneImage.getHeight() / 2);
         int length = line.length;
-        GraphicsContext graphicsContext = iconLayer.getGraphicsContext2D();
+        GraphicsContext graphicsContext = lineLayer.getGraphicsContext2D();
+        graphicsContext.clearRect(0, 0, lineLayer.getWidth(), lineLayer.getHeight());
         graphicsContext.setStroke(LineColor);
 
         for (int i = 0; i < length; i++) {
             switch (line[i]) {
                 case "Right":
-                    graphicsContext.strokeLine(x , y, x + cube_length, y);
+                    graphicsContext.strokeLine(x, y, x + cube_length, y);
                     x += cube_length;
                     break;
                 case "Left":
@@ -395,15 +429,27 @@ public class MainWindowController extends Observable implements Initializable, O
 
         String[] input = (String[]) arg;
         if (input[0].equals("Down") || input[0].equals("Up") || input[0].equals("Right") || input[0].equals("Left")) {
+            pathFound = true;
             pathInstructions = input;
+            drawLine(pathInstructions);
         } else {
             double x = Double.parseDouble(input[0]);
             double y = Double.parseDouble(input[1]);
+            angle = Double.parseDouble(input[2]);
             x = (x - startPos.getX() + offset) / offset;
             y = Math.abs((y - startPos.getY() + offset) / offset);
             airplane_pos.setX(x);
             airplane_pos.setY(y);
+            drawIcons();
+            if(pathFound) {
+                this.viewModel.connectToPathFinder(pathFinderIP, pathFinderPort);
+                this.viewModel.findPath(
+                        airplane_pos,
+                        target_pos,
+                        this._mapData
+                );
+            }
         }
-        drawIcons();
+
     }
 }

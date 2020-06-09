@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="PTM_Client">
+    <output-path>$PROJECT_DIR$/out/artifacts/PTM_Client</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="view.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="Flight Simulator Client" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="PTM_Client.jar">
+        <element id="module-output" name="PTM_Client" />
+      </element>
+    </root>
+  </artifact>
+</component>

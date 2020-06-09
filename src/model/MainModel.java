@@ -27,6 +27,10 @@ public class MainModel extends Observable {
         singleConnection = SimulatorConnection.getConnection(ip, port);
     }
 
+    public void disconnectFromTheSimulator(){
+        singleConnection.stopAndDeleteConnection();
+    }
+
     /**
      * Send move commands to the simulator
      *
@@ -106,10 +110,13 @@ public class MainModel extends Observable {
     // ----------------------------------- AutoPilot functions -------------------------------------------
     public void interpret(File aFile) {
         thread = new Thread(() -> interpreter.interpret(aFile.getName()));
-        thread.start();
+        try{
+            thread.start();
+        }catch (Exception e) {}
     }
 
     public void stopInterpret() {
+        thread.interrupt();
         interpreter.stop();
     }
 

@@ -20,6 +20,9 @@ public class Varible {
 	
 	//Setters
 	public void setBind(String bind) {this.bind = bind;}
+	public void setValueWithoutBind(double value){
+		this.value = value;
+	}
 	public void setValue(double value) {
 		this.value = value;
 		if(bind != null) 
@@ -27,7 +30,8 @@ public class Varible {
 				String[] outToServer ={
 						"set "+bind+" "+Double.toString(value)
 				};
-				SimulatorConnection.getConnection("127.0.0.1",5402).sendData(outToServer);
+				SimulatorConnection aConnection = SimulatorConnection.getConnection();
+				if(aConnection != null)	aConnection.sendData(outToServer);
 			}catch (Exception e) {}
 	}
 	

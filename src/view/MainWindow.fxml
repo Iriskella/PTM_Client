@@ -43,6 +43,7 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <HeightMapDisplayer fx:id="heightMap" height="200.0" width="200.0" />
+                        <Canvas fx:id="lineLayer" height="200.0" width="200.0" />
                         <Canvas fx:id="iconLayer" height="200.0" width="200.0" />
                      </children>
                   </StackPane>
@@ -57,7 +58,7 @@
          <children>
             <HBox spacing="100.0">
                <children>
-                  <RadioButton fx:id="autoPilot" mnemonicParsing="false" onAction="#radioButtonsPressed" text="Auto Pilot">
+                  <RadioButton fx:id="autoPilot" mnemonicParsing="false" onAction="#radioButtons1Pressed" text="Auto Pilot">
                      <padding>
                         <Insets top="5.0" />
                      </padding></RadioButton>
@@ -84,7 +85,7 @@
          <children>
             <HBox spacing="50.0">
                <children>
-                  <RadioButton fx:id="manual" mnemonicParsing="false" onAction="#radioButtonsPressed" text="Manual">
+                  <RadioButton fx:id="manual" mnemonicParsing="false" onAction="#radioButtons2Pressed" text="Manual">
                      <padding>
                         <Insets top="5.0" />
                      </padding></RadioButton>

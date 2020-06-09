@@ -48,6 +48,10 @@ public class SimulatorConnection {
         return singleConnection;
     }
 
+    public static SimulatorConnection getConnection() {
+        return singleConnection;
+    }
+
     /**
      * return plain location
      */
@@ -77,12 +81,19 @@ public class SimulatorConnection {
             String[] y = latitude.split("[<>]");
             in.readLine();
 
+            out.println("get /instrumentation/heading-indicator/indicated-heading-deg");
+            out.flush();
+            String angle = in.readLine();
+            angle = angle.substring(
+                    angle.indexOf("'") + 1,angle.lastIndexOf("'")
+            );
+            System.out.println(angle);
+
             out.close();
             in.close();
             soc.close();
 
-            System.out.println("New location: " + x[2] + " | " + y[2]);
-            return new String[]{x[2],y[2]};
+            return new String[]{x[2], y[2], angle};
 
         } catch (IOException e) {
             e.printStackTrace();

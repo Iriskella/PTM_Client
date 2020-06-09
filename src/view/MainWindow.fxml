@@ -1,136 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.*?>
-<?import view.*?>
-
-<HBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindowController">
-   <children>
-      <VBox>
-         <children>
-            <HBox>
-               <children>
-                  <Button mnemonicParsing="false" onAction="#loadFile" prefHeight="25.0" prefWidth="80.0" text="Load Data">
-                     <font>
-                        <Font name="Century Gothic" size="12.0" />
-                     </font></Button>
-                  <Button mnemonicParsing="false" onAction="#connect" prefHeight="25.0" prefWidth="80.0" text="Connect">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Century Gothic" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#calculatePath" prefHeight="25.0" prefWidth="110.0" text="Calculate Path">
-                     <font>
-                        <Font name="Century Gothic" size="12.0" />
-                     </font></Button>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <ScrollPane prefHeight="300.0" prefWidth="300.0">
-               <content>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <HeightMapDisplayer fx:id="heightMap" height="200.0" width="200.0" />
-                        <Canvas fx:id="lineLayer" height="200.0" width="200.0" />
-                        <Canvas fx:id="iconLayer" height="200.0" width="200.0" />
-                     </children>
-                  </StackPane>
-               </content>
-            </ScrollPane>
-         </children>
-         <HBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </HBox.margin>
-      </VBox>
-      <VBox>
-         <children>
-            <HBox spacing="100.0">
-               <children>
-                  <RadioButton fx:id="autoPilot" mnemonicParsing="false" onAction="#radioButtons1Pressed" text="Auto Pilot">
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding></RadioButton>
-                  <Button mnemonicParsing="false" onAction="#loadAutoPilot" prefHeight="25.0" text="Load Auto Pilot File">
-                     <font>
-                        <Font name="Century Gothic" size="12.0" />
-                     </font></Button>
-               </children>
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
-            </HBox>
-            <TextArea fx:id="txtArea" prefHeight="300.0" prefWidth="311.0">
-               <VBox.margin>
-                  <Insets top="9.0" />
-               </VBox.margin>
-            </TextArea>
-         </children>
-         <HBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </HBox.margin>
-      </VBox>
-      <VBox>
-         <children>
-            <HBox spacing="50.0">
-               <children>
-                  <RadioButton fx:id="manual" mnemonicParsing="false" onAction="#radioButtons2Pressed" text="Manual">
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding></RadioButton>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin>
-            </HBox>
-            <AnchorPane prefHeight="298.0" prefWidth="361.0">
-               <children>
-                  <Circle fx:id="border" fill="#e1e1e1" layoutX="209.0" layoutY="130.0" radius="100.0" stroke="#223480" strokeType="INSIDE" />
-                  <Circle fx:id="joystick" fill="#223480" layoutX="209.0" layoutY="134.0" radius="35.0" stroke="#223480" strokeType="INSIDE" />
-                  <Slider fx:id="throttleSlider" layoutX="38.0" layoutY="39.0" majorTickUnit="0.1" max="1.0" minorTickCount="1" orientation="VERTICAL" prefHeight="189.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" />
-                  <Slider fx:id="rudderSlider" layoutX="90.0" layoutY="260.0" majorTickUnit="0.1" max="1.0" minorTickCount="1" prefHeight="26.0" prefWidth="237.0" showTickLabels="true" showTickMarks="true" />
-                  <Label layoutX="-4.0" layoutY="123.0" rotate="-90.0" text="Throttle">
-                     <font>
-                        <Font name="Century Gothic Bold" size="17.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="179.0" layoutY="238.0" text="Rudder">
-                     <font>
-                        <Font name="Century Gothic Bold" size="17.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="167.0" layoutY="3.0" text="Aileron &lt;-&gt;">
-                     <font>
-                        <Font name="Century Gothic Bold" size="17.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="279.0" layoutY="119.0" rotate="90.0" text="&lt;-&gt; Elevator">
-                     <font>
-                        <Font name="Century Gothic Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-         </children>
-         <HBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </HBox.margin>
-      </VBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+<?import view.HeightMapDisplayer?>
+<HBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="view.MainWindowController">
+    <children>
+        <!--
+           <VBox spacing="10.0">
+              <children>
+                 <Button graphicTextGap="0.0" maxWidth="10.0" mnemonicParsing="false" onAction="#zoomIn" prefHeight="30.0" prefWidth="30.0" text="+">
+                    <font>
+                       <Font size="14.0" />
+                    </font>
+                 </Button>
+                 <Button graphicTextGap="0.0" maxWidth="40.0" mnemonicParsing="false" onAction="#zoomOut" prefHeight="30.0" prefWidth="30.0" text="-">
+                    <font>
+                       <Font size="14.0" />
+                    </font>
+                 </Button>
+              </children>
+              <HBox.margin>
+                 <Insets top="50.0" />
+              </HBox.margin>
+           </VBox>
+         -->
+        <VBox>
+            <children>
+                <HBox>
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#loadFile" prefHeight="25.0" prefWidth="80.0"
+                                text="Load Data">
+                            <font>
+                                <Font name="Century Gothic" size="12.0"/>
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#connect" prefHeight="25.0" prefWidth="80.0"
+                                text="Connect">
+                            <HBox.margin>
+                                <Insets left="10.0" right="10.0"/>
+                            </HBox.margin>
+                            <font>
+                                <Font name="Century Gothic" size="12.0"/>
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#calculatePath" prefHeight="25.0" prefWidth="110.0"
+                                text="Calculate Path">
+                            <font>
+                                <Font name="Century Gothic" size="12.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </HBox>
+                <ScrollPane prefHeight="300.0" prefWidth="300.0">
+                    <content>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                            <children>
+                                <HeightMapDisplayer fx:id="heightMap" height="200.0" width="200.0"/>
+                                <Canvas fx:id="lineLayer" height="200.0" width="200.0"/>
+                                <Canvas fx:id="iconLayer" height="200.0" width="200.0"/>
+                            </children>
+                        </StackPane>
+                    </content>
+                </ScrollPane>
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </HBox.margin>
+        </VBox>
+        <VBox>
+            <children>
+                <HBox spacing="100.0">
+                    <children>
+                        <RadioButton fx:id="autoPilot" mnemonicParsing="false" onAction="#radioButtons1Pressed"
+                                     text="Auto Pilot">
+                            <padding>
+                                <Insets top="5.0"/>
+                            </padding>
+                        </RadioButton>
+                        <Button mnemonicParsing="false" onAction="#loadAutoPilot" prefHeight="25.0"
+                                text="Load Auto Pilot File">
+                            <font>
+                                <Font name="Century Gothic" size="12.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </HBox>
+                <TextArea fx:id="txtArea" prefHeight="300.0" prefWidth="311.0">
+                    <VBox.margin>
+                        <Insets top="9.0"/>
+                    </VBox.margin>
+                </TextArea>
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </HBox.margin>
+        </VBox>
+        <VBox>
+            <children>
+                <HBox spacing="50.0">
+                    <children>
+                        <RadioButton fx:id="manual" mnemonicParsing="false" onAction="#radioButtons2Pressed"
+                                     text="Manual">
+                            <padding>
+                                <Insets top="5.0"/>
+                            </padding>
+                        </RadioButton>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0"/>
+                    </padding>
+                    <VBox.margin>
+                        <Insets bottom="5.0"/>
+                    </VBox.margin>
+                </HBox>
+                <AnchorPane prefHeight="298.0" prefWidth="361.0">
+                    <children>
+                        <Circle fx:id="border" fill="#e1e1e1" layoutX="209.0" layoutY="130.0" radius="100.0"
+                                stroke="#223480" strokeType="INSIDE"/>
+                        <Circle fx:id="joystick" fill="#223480" layoutX="209.0" layoutY="134.0" radius="35.0"
+                                stroke="#223480" strokeType="INSIDE"/>
+                        <Slider fx:id="throttleSlider" layoutX="38.0" layoutY="39.0" majorTickUnit="0.1" max="1.0"
+                                minorTickCount="1" orientation="VERTICAL" prefHeight="189.0" prefWidth="41.0"
+                                showTickLabels="true" showTickMarks="true"/>
+                        <Slider fx:id="rudderSlider" layoutX="90.0" layoutY="260.0" majorTickUnit="0.1" max="1.0"
+                                minorTickCount="1" prefHeight="26.0" prefWidth="237.0" showTickLabels="true"
+                                showTickMarks="true"/>
+                        <Label layoutX="-4.0" layoutY="123.0" rotate="-90.0" text="Throttle">
+                            <font>
+                                <Font name="Century Gothic Bold" size="17.0"/>
+                            </font>
+                        </Label>
+                        <Label layoutX="179.0" layoutY="238.0" text="Rudder">
+                            <font>
+                                <Font name="Century Gothic Bold" size="17.0"/>
+                            </font>
+                        </Label>
+                        <Label layoutX="167.0" layoutY="3.0" text="Aileron &lt;-&gt;">
+                            <font>
+                                <Font name="Century Gothic Bold" size="17.0"/>
+                            </font>
+                        </Label>
+                        <Label layoutX="279.0" layoutY="119.0" rotate="90.0" text="&lt;-&gt; Elevator">
+                            <font>
+                                <Font name="Century Gothic Bold" size="17.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </HBox.margin>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
 </HBox>

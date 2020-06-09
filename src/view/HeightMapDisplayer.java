@@ -2,11 +2,7 @@ package view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 /**
  * Class extends canvas and draws height map represented by height matrix
@@ -32,9 +28,18 @@ public class HeightMapDisplayer extends Canvas {
     public int get_rowAmount() {
         return _rowAmount;
     }
+
     public int get_colAmount() {
         return _colAmount;
     }
+
+
+   /* public void zoom(double value) {
+        CubeLength += value;
+        super.setWidth(_colAmount * CubeLength);
+        super.setHeight(_rowAmount * CubeLength);
+        this.drawMap();
+    }*/
 
     /**
      * Updates height matrix and canvas size
@@ -63,6 +68,8 @@ public class HeightMapDisplayer extends Canvas {
      */
     private void drawMap() {
         if (_heightMatrix == null) return;
+
+        graphicsContext.clearRect(0, 0, super.getWidth(), super.getHeight());
 
         for (int row = 0; row < _rowAmount; row++)
             for (int col = 0; col < _colAmount; col++) {

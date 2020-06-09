@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.javafx.css.StyleCache;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
@@ -12,7 +13,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
@@ -80,6 +83,7 @@ public class MainWindowController extends Observable implements Initializable, O
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         // Initialize default csv file
         try {
             if (heightMap != null) {
@@ -234,6 +238,28 @@ public class MainWindowController extends Observable implements Initializable, O
             this.viewModel.stopInterpret();
         else ConnectionRequiredAlert();
     }
+
+    /*// Zoom in and out functions
+    public void zoomIn(){
+        heightMap.zoom(1);
+        iconLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
+        iconLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
+        lineLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
+        lineLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
+        this.drawIcons();
+        if(pathFound)
+            this.drawLine(pathInstructions);
+    }
+    public void zoomOut(){
+        heightMap.zoom(-1);
+        iconLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
+        iconLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
+        lineLayer.setWidth(this.heightMap.get_colAmount() * cube_length);
+        lineLayer.setHeight(this.heightMap.get_rowAmount() * cube_length);
+        this.drawIcons();
+        if(pathFound)
+            this.drawLine(pathInstructions);
+    }*/
 
     // ----------------------------------- Event handlers -------------------------------------------
 

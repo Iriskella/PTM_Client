@@ -57,6 +57,8 @@ public class MainWindowController extends Observable implements Initializable, O
     // Shared data
     public DoubleProperty aileron, elevator;
     // Data
+    private boolean isConnected, pathFound, interpretIsOn;
+    private File currentFile;
     private static String currIp, currPort, pathFinderIP, pathFinderPort;
     private final Color LineColor = Color.BLACK.darker();
     private final Image AirplaneImage = new Image(new FileInputStream("./resources/airplane.png"));
@@ -68,12 +70,12 @@ public class MainWindowController extends Observable implements Initializable, O
     private Point airplane_pos, target_pos, startPos, endPos;
     private Point originalScene, originalTranslate;
     private double offset, angle;
-    private boolean isConnected, pathFound;
-    private File currentFile;
+
 
     // ----------------------------------- Initialize functions -------------------------------------------
 
     public MainWindowController() throws FileNotFoundException {
+        interpretIsOn = false;
         pathFound = false;
         isConnected = false;
         airplane_pos = new Point();
@@ -204,8 +206,15 @@ public class MainWindowController extends Observable implements Initializable, O
      * Load TXT file and send it's data to the interpreter
      */
     public void loadAutoPilot() {
-        File currentFile = TxtHandler.LoadFile(heightMap.getScene().getWindow());
+        if (interpretIsOn) {
+            this.viewModel.stopInterpret();
+            interpretIsOn = false;
+        }
+
+        currentFile = TxtHandler.LoadFile(heightMap.getScene().getWindow());
+        if(currentFile == null) return;
         try {
+            txtArea.clear();
             String[] txtData = TxtHandler.getTxtData(currentFile);
             for (String s : txtData) {
                 txtArea.appendText(s);
@@ -216,6 +225,7 @@ public class MainWindowController extends Observable implements Initializable, O
         }
         if (autoPilot.isSelected() && currentFile != null) {
             this.viewModel.interpret(currentFile);
+            interpretIsOn = true;
         }
     }
 
@@ -226,16 +236,21 @@ public class MainWindowController extends Observable implements Initializable, O
         if (!isConnected) {
             ConnectionRequiredAlert();
             return;
-        } else if (currentFile != null)
+        }
+        if (currentFile != null) {
             this.viewModel.interpret(currentFile);
+            interpretIsOn = true;
+        }
     }
 
     /**
      * Manual pressed -> deactivate auto pilot
      */
     public void radioButtons2Pressed() {
-        if (isConnected)
+        if (interpretIsOn) {
             this.viewModel.stopInterpret();
+            interpretIsOn = false;
+        }
         else ConnectionRequiredAlert();
     }
 
@@ -269,6 +284,14 @@ public class MainWindowController extends Observable implements Initializable, O
         public void handle(MouseEvent e) {
             target_pos = new Point(e.getX() / cube_length, e.getY() / cube_length);
             drawIcons();
+            if(pathFound) {
+                viewModel.connectToPathFinder(pathFinderIP, pathFinderPort);
+                viewModel.findPath(
+                        airplane_pos,
+                        target_pos,
+                        _mapData
+                );
+            }
         }
     };
 

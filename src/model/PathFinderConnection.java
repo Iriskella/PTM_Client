@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
 
 public class PathFinderConnection {
 
-    private static PathFinderConnection singleConnection;
     private Socket socket;
     private PrintWriter outToSocket;
     private BufferedReader inFromSocket;

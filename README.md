@@ -106,7 +106,7 @@ This is done by the Observer Pattern, which binds the different components toget
 
 ## Built With
 
-* [InteliJ](https://www.jetbrains.com/idea/promo/ultimate/?gclid=Cj0KCQjwuJz3BRDTARIsAMg-HxVutxHcwMpa_KlPrw8UA2my1eSfvKwwKSCfuDTuYDe8N9JIMsRCtP8aAnFqEALw_wcB) - Java IDE
+* [IntelliJ](https://www.jetbrains.com/idea/promo/ultimate/?gclid=Cj0KCQjwuJz3BRDTARIsAMg-HxVutxHcwMpa_KlPrw8UA2my1eSfvKwwKSCfuDTuYDe8N9JIMsRCtP8aAnFqEALw_wcB) - Java IDE
 * [Scene Builder](https://gluonhq.com/products/scene-builder/)  - Scene Builder 8.5.0
 
 

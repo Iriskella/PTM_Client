@@ -1,6 +1,6 @@
 # Flight Simulator Control - Client Side 
 
-(//add youtube link)
+[Our project demonstration](https://www.youtube.com/watch?v=kfpkIxbvJyw)
 
 This is a project we developed during our advanced software programming course in our 2nd year.
 This project helped us to gain a higher level of knowledge in programming, with emphasis on design patterns and programming principles such as SOLID and GRASP, and finally developing our own JavaFX desktop application.

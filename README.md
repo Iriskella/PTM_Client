@@ -1,13 +1,12 @@
-# Flight Simulator Control 
+# Flight Simulator Control - Client Side 
 
-[![Presentation Project](/uml/example.png)](https://youtu.be/rWe9220DOY8)
+(//add youtube link)
 
 This is a project we developed during our advanced software programming course in our 2nd year.
 This project helped us to gain a higher level of knowledge in programming, with emphasis on design patterns and programming principles such as SOLID and GRASP, and finally developing our own JavaFX desktop application.
 
 ## Client-Side
-
-<--> uml
+[Client Java UML](UMLs/UML_client.png)
 
 ---
 ##   Interpreter 
@@ -54,10 +53,7 @@ We can see that arithmetic expressions are supported as well, and to interpret t
 ---
 
 ### Command Pattern
-
-<p align="center">
-  <img src="/uml/CommandPattern.png" width="600">
-</p>
+[Command Pattern UML](UMLs/2_CommandPattern.png)
 
 In this project there is an extensive use of commands, the plane needs to receive a lot of instructions in a short period of time 
 in order to fly correctly. For that matter, the most suitable design pattern for the task is the Command Pattern. 
@@ -72,9 +68,8 @@ So if, for example, we take a look at the "loop" command or "if" command, then w
 ---
 ### Interpreter stages
 
-<p align="center">
-  <img src="/uml/interpreter.png" width="600">
-</p>
+[Interpreter Stages](UMLs/3_interpreter.png)
+
 
 So this script-reader works in a very similar way to the interpreter of a real programming language.
 
@@ -91,9 +86,7 @@ So, before we start running the commands, we will make sure that a ``Pre-Parser`
 ---
 ## MVVM Architecture
 
-<p align="center">
-  <img src="/uml/mvvm.png" width="600">
-</p>
+[Interpreter Stages](UMLs/4_mvvm.png)
 
 In this project we chose to use the **MVVM architecture**.
 
@@ -113,9 +106,9 @@ This is done by the Observer Pattern, which binds the different components toget
 
 ## Built With
 
-* [InteliJ] - Java IDE
+* [InteliJ](https://www.jetbrains.com/idea/promo/ultimate/?gclid=Cj0KCQjwuJz3BRDTARIsAMg-HxVutxHcwMpa_KlPrw8UA2my1eSfvKwwKSCfuDTuYDe8N9JIMsRCtP8aAnFqEALw_wcB) - Java IDE
 * [Scene Builder](https://gluonhq.com/products/scene-builder/)  - Scene Builder 8.5.0
 
 
 ## Authors
-* **Amnon Ashkenazy** - [LinkedIn](https://www.linkedin.com/in/orlevi13/) & **Iris Kella** - [LinkedIn](https://www.linkedin.com/in/edenshtein/)
+* **Amnon Ashkenazy** - [LinkedIn](https://www.linkedin.com/in/amnon-ashkenazy-a1590b181/) & **Iris Kella** - [LinkedIn](https://www.linkedin.com/in/iris-kella-341549111/)

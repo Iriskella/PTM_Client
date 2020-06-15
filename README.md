@@ -6,7 +6,7 @@ This is a project we developed during our advanced software programming course i
 This project helped us to gain a higher level of knowledge in programming, with emphasis on design patterns and programming principles such as SOLID and GRASP, and finally developing our own JavaFX desktop application.
 
 ## Client-Side
-[Client Java UML](UMLs/UML_client.png)
+![Client Java UML](UMLs/UML_client.png)
 
 ---
 ##   Interpreter 
@@ -53,7 +53,7 @@ We can see that arithmetic expressions are supported as well, and to interpret t
 ---
 
 ### Command Pattern
-[Command Pattern UML](UMLs/2_CommandPattern.png)
+![Command Pattern UML](UMLs/2_CommandPattern.png)
 
 In this project there is an extensive use of commands, the plane needs to receive a lot of instructions in a short period of time 
 in order to fly correctly. For that matter, the most suitable design pattern for the task is the Command Pattern. 
@@ -68,7 +68,7 @@ So if, for example, we take a look at the "loop" command or "if" command, then w
 ---
 ### Interpreter stages
 
-[Interpreter Stages](UMLs/3_interpreter.png)
+![Interpreter Stages](UMLs/3_interpreter.png)
 
 
 So this script-reader works in a very similar way to the interpreter of a real programming language.
@@ -86,7 +86,7 @@ So, before we start running the commands, we will make sure that a ``Pre-Parser`
 ---
 ## MVVM Architecture
 
-[Interpreter Stages](UMLs/4_mvvm.png)
+![MVVM Architecture](UMLs/4_mvvm.png)
 
 In this project we chose to use the **MVVM architecture**.
 

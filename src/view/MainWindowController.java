@@ -251,7 +251,7 @@ public class MainWindowController extends Observable implements Initializable, O
             this.viewModel.stopInterpret();
             interpretIsOn = false;
         }
-        else ConnectionRequiredAlert();
+        else if(!isConnected) ConnectionRequiredAlert();
     }
 
     /*// Zoom in and out functions
